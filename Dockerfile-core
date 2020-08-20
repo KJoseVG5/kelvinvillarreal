@@ -1,0 +1,14 @@
+FROM alpine/git as clone
+WORKDIR /app
+RUN git clone https://github.com/kelvinvillarreal/mybudget.git
+
+FROM maven:3.5-jdk-8-alpine as build
+WORKDIR /app
+COPY --from=clone /app/mybudget/mybudget-core /app 
+RUN mvn install
+
+FROM openjdk:8-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/mybudget-core-0.0.1-SNAPSHOT.jar /app 
+EXPOSE 8180
+CMD ["java", "-Xmx512m", "-jar", "mybudget-core-0.0.1-SNAPSHOT.jar"]

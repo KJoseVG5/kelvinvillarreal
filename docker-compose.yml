@@ -1,0 +1,53 @@
+version: '3'
+services:
+    rabbitmq:
+      image: rabbitmq:management
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+    mybudget-service-registry:
+        image: kelvinvillarrealgodoy/mybudget-service-registry
+        container_name: mybudget-service-registry
+        build: ./mybudget-service-registry
+        ports:
+          - "8761:8761"
+    mybudget-gateway:
+        image: kelvinvillarrealgodoy/mybudget-gateway
+        container_name: mybudget-gateway
+        build: ./mybudget-gateway
+        ports:
+          - "8000:8000"
+        links:
+            - "mybudget-service-registry"
+        environment:
+            - eureka.client.serviceUrl.defaultZone=http://mybudget-service-registry:8761/eureka 
+    mybudget-core:
+        image: kelvinvillarrealgodoy/mybudget-core
+        container_name: mybudget-core
+        build: ./mybudget-core
+        ports:
+          - "8180:8180"
+        depends_on:
+            - mybudget-service-registry
+            - rabbitmq
+        links:
+            - "mybudget-service-registry"
+        environment:
+            - SPRING_RABBITMQ_HOST=rabbitmq
+            - eureka.client.serviceUrl.defaultZone=http://mybudget-service-registry:8761/eureka 
+    mybudget-budget:
+        image: kelvinvillarrealgodoy/mybudget-budget
+        container_name: mybudget-budget
+        build: ./mybudget-budget
+        ports:
+          - "8081:8081"
+        depends_on:
+            - mybudget-service-registry                        
+            - rabbitmq
+        links:
+            - "mybudget-service-registry"
+            - "mybudget-core"
+        environment:
+            - SPRING_RABBITMQ_HOST=rabbitmq
+            - COREHOST=http://mybudget-core:8180/foo
+            - eureka.client.serviceUrl.defaultZone=http://mybudget-service-registry:8761/eureka             
