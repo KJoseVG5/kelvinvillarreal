@@ -1,0 +1,12 @@
+.classpath
+.proyecto
+.settings /
+objetivo
+registros
+.metadata /
+.factorypath
+.localRepo
+.idea
+* .iml
+docker / output_files /
+mybudget_jee / output_files /
