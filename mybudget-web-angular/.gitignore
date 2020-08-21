@@ -1,0 +1,43 @@
+# Consulte http://help.github.com/ignore-files/ para obtener más información sobre cómo ignorar archivos.
+
+# salida compilada
+/ dist
+/ tmp
+/ out-tsc
+
+# dependencias
+/ node_modules
+
+# archivos de perfiles
+chrome-profiler-events.json
+plugin de medición de velocidad.json
+
+# IDE y editores
+/ .idea
+.proyecto
+.classpath
+.c9 /
+* .launch
+.settings /
+* .sublime-workspace
+
+# IDE - VSCode
+.vscode / *
+! .vscode / settings.json
+! .vscode / tasks.json
+! .vscode / launch.json
+! .vscode / extensions.json
+
+# misceláneo
+/ .sass-cache
+/ connect.lock
+/ cobertura
+/ libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/ tipificaciones
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
